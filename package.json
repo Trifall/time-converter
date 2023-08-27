@@ -61,6 +61,9 @@
 	"license": "MIT",
 	"lint-staged": {
 		"src/**/*.{js,jsx,ts,tsx,css,scss,md}": "yarn lint:format",
-		"src/**/*.{js,jsx,ts,tsx}": "yarn type-check && yarn lint"
+		"src/**/*.{js,jsx,ts,tsx}": [
+			"yarn type-check",
+			"yarn lint"
+		]
 	}
 }
