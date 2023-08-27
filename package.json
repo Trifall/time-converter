@@ -1,8 +1,8 @@
 {
-	"name": "vite-react-ts-tw-shadcn-template",
+	"name": "time-converter",
 	"version": "1.0.0",
 	"type": "module",
-	"description": "A template with Vite, React, TypeScript, TailwindCSS, and ShadCN UI.",
+	"description": "Website for converting various time formats.",
 	"author": {
 		"name": "Jerren Trifan",
 		"email": "Jerren@trifall.com"
