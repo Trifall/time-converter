@@ -1,4 +1,3 @@
-import React from 'react';
 import ConvertForm from './components/convertForm';
 import Footer from './components/footer';
 import Header from './components/header';
