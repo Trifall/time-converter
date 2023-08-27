@@ -9,13 +9,13 @@
 	},
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc -p tsconfig.json && vite build",
+		"build": "tsc && vite build",
 		"serve": "vite preview",
 		"lint:fix": "eslint ./src --ext .jsx,.js,.ts,.tsx --cache --fix --ignore-path ./.gitignore",
 		"lint:format": "prettier --ignore-path .gitignore --log-level warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
 		"lint": "yarn lint:format && yarn lint:fix ",
 		"pipeline": "yarn && yarn type-check && yarn lint && yarn build",
-		"type-check": "tsc -p tsconfig.json --noEmit",
+		"type-check": "tsc --noEmit",
 		"prepare": "husky install"
 	},
 	"dependencies": {
