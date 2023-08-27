@@ -58,12 +58,5 @@
 		"typescript": "^5.0.2",
 		"vite": "^4.4.5"
 	},
-	"license": "MIT",
-	"lint-staged": {
-		"src/**/*.{js,jsx,ts,tsx,css,scss,md}": "yarn lint:format",
-		"src/**/*.{js,jsx,ts,tsx}": [
-			"yarn type-check",
-			"yarn lint"
-		]
-	}
+	"license": "MIT"
 }
