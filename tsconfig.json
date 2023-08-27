@@ -28,7 +28,7 @@
 		"noImplicitAny": true,
 		"noImplicitThis": true /* Raise error on 'this' expressions with an implied 'any' type. */,
 		"strictNullChecks": true /* Enable strict null checks. */,
-		"typeRoots": ["./node_modules/@types", "./src/@types"],
+		"typeRoots": ["./node_modules/@types", "src/types"],
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
