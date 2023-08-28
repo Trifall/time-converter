@@ -1,20 +1,25 @@
-export type TimeType =
-	| 'eons'
-	| 'millennia'
-	| 'centuries'
-	| 'decades'
-	| 'years'
-	| 'months'
-	| 'weeks'
-	| 'work-weeks'
-	| 'days'
-	| 'hours'
-	| 'minutes'
-	| 'seconds'
-	| 'milliseconds'
-	| 'microseconds'
-	| 'nanoseconds'
-	| 'hours:minutes:seconds';
+export const TimeTypes = {
+	eons: 'eons',
+	millennia: 'millennia',
+	centuries: 'centuries',
+	decades: 'decades',
+	years: 'years',
+	months: 'months',
+	weeks: 'weeks',
+	'work-weeks': 'work-weeks',
+	days: 'days',
+	hours: 'hours',
+	minutes: 'minutes',
+	seconds: 'seconds',
+	milliseconds: 'milliseconds',
+	microseconds: 'microseconds',
+	nanoseconds: 'nanoseconds',
+	'hours:minutes:seconds': 'hours:minutes:seconds',
+} as const;
+
+export type TimeTypeKey = keyof typeof TimeTypes;
+
+export type TimeType = (typeof TimeTypes)[TimeTypeKey];
 
 export interface TimeDescription {
 	capitalized_name?: string; // Optional field for capitalized name

@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { TimeDescriptions, TimeType } from '../types/time';
+import { TimeDescriptions, TimeType, TimeTypes } from '../types/time';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
@@ -33,9 +33,13 @@ const timeTypeValidator: z.ZodType<string> = z.string().refine(isValidTimeType, 
 
 // Define the form schema using the custom number type
 const formSchema = z.object({
-	convertValue: numberWithCommas,
 	from_unit: timeTypeValidator,
 	to_unit: timeTypeValidator,
+	// One of the two sets of fields is required
+	convertValue: numberWithCommas.optional(),
+	hours: numberWithCommas.optional(),
+	minutes: numberWithCommas.optional(),
+	seconds: numberWithCommas.optional(),
 });
 
 const ConvertForm = () => {
@@ -45,20 +49,44 @@ const ConvertForm = () => {
 			convertValue: 0,
 			from_unit: 'hours',
 			to_unit: 'seconds',
+			hours: undefined,
+			minutes: undefined,
+			seconds: undefined,
 		},
 	});
 
+	const resetValues = (value: string) => {
+		if (value === TimeTypes['hours:minutes:seconds']) {
+			form.setValue('convertValue', undefined, { shouldValidate: true });
+			form.setValue('hours', 0, { shouldValidate: true });
+			form.setValue('minutes', 0, { shouldValidate: true });
+			form.setValue('seconds', 0, { shouldValidate: true });
+		} else {
+			form.setValue('convertValue', 0, { shouldValidate: true });
+			form.setValue('hours', undefined, { shouldValidate: true });
+			form.setValue('minutes', undefined, { shouldValidate: true });
+			form.setValue('seconds', undefined, { shouldValidate: true });
+		}
+	};
+
 	const handleSwapUnits = () => {
 		const { from_unit, to_unit } = form.getValues();
-		form.setValue('from_unit', to_unit, { shouldValidate: true });
+		if (from_unit === TimeTypes['hours:minutes:seconds'] || to_unit === TimeTypes['hours:minutes:seconds']) {
+			handleFromUnitChange(to_unit);
+		} else {
+			form.setValue('from_unit', to_unit, { shouldValidate: true });
+		}
 		form.setValue('to_unit', from_unit, { shouldValidate: true });
 		// console.log('error:' + form.getFieldState('from_unit').error);
 	};
 
+	const handleFromUnitChange = (value: string) => {
+		form.setValue('from_unit', value, { shouldValidate: true });
+		resetValues(value);
+	};
+
 	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
 		console.log('values:', values);
 	}
 
@@ -69,29 +97,103 @@ const ConvertForm = () => {
 				<CardContent>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 pt-4'>
-							<FormField
-								control={form.control}
-								name='convertValue'
-								render={({ field }) => (
-									<FormItem className='flex flex-col'>
-										<div className='flex flex-row items-center justify-between'>
-											<FormLabel className='px-2 text-xl font-bold'>Value</FormLabel>
-											<FormControl className='max-w-[250px]'>
-												<Input
-													type='text'
-													{...field}
-													onBlur={() => {
-														if (field.value.toString().length === 0) {
-															field.onChange('0');
-														}
-													}}
-												/>
-											</FormControl>
-										</div>
-										<FormMessage className='self-end' />
-									</FormItem>
-								)}
-							/>
+							{form.watch('from_unit') === TimeTypes['hours:minutes:seconds'] ? (
+								<div className='flex flex-row'>
+									<FormField
+										control={form.control}
+										name='hours'
+										render={({ field }) => (
+											<FormItem className='flex flex-col'>
+												<div className='flex flex-row items-center justify-between'>
+													<FormControl className='max-w-[80px]'>
+														<Input
+															type='text'
+															placeholder='Hours'
+															{...field}
+															onBlur={() => {
+																if (field.value?.toString().length === 0) {
+																	form.setValue('hours', 0);
+																}
+															}}
+														/>
+													</FormControl>
+												</div>
+												<FormMessage className='self-end'>{form.formState.errors.hours?.message}</FormMessage>
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={form.control}
+										name='minutes'
+										render={({ field }) => (
+											<FormItem className='flex flex-col'>
+												<div className='flex flex-row items-center justify-between'>
+													<FormControl className='max-w-[80px]'>
+														<Input
+															type='text'
+															placeholder='Minutes'
+															{...field}
+															onBlur={() => {
+																if (field.value?.toString().length === 0) {
+																	form.setValue('minutes', 0);
+																}
+															}}
+														/>
+													</FormControl>
+												</div>
+												<FormMessage className='self-end'>{form.formState.errors.minutes?.message}</FormMessage>
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={form.control}
+										name='seconds'
+										render={({ field }) => (
+											<FormItem className='flex flex-col'>
+												<div className='flex flex-row items-center justify-between'>
+													<FormControl className='max-w-[80px]'>
+														<Input
+															type='text'
+															placeholder='Seconds'
+															{...field}
+															onBlur={() => {
+																if (field.value?.toString().length === 0) {
+																	form.setValue('seconds', 0);
+																}
+															}}
+														/>
+													</FormControl>
+												</div>
+												<FormMessage className='self-end'>{form.formState.errors.seconds?.message}</FormMessage>
+											</FormItem>
+										)}
+									/>
+								</div>
+							) : (
+								<FormField
+									control={form.control}
+									name='convertValue'
+									render={({ field }) => (
+										<FormItem className='flex flex-col'>
+											<div className='flex flex-row items-center justify-between'>
+												<FormLabel className='px-2 text-xl font-bold'>Value</FormLabel>
+												<FormControl className='max-w-[250px]'>
+													<Input
+														type='text'
+														{...field}
+														onBlur={() => {
+															if (field.value?.toString().length === 0) {
+																field.onChange('0');
+															}
+														}}
+													/>
+												</FormControl>
+											</div>
+											<FormMessage className='self-end'>{form.formState.errors.from_unit?.message}</FormMessage>
+										</FormItem>
+									)}
+								/>
+							)}
 							<Controller
 								control={form.control}
 								rules={{ required: true }}
@@ -100,7 +202,7 @@ const ConvertForm = () => {
 									<FormItem className='flex flex-col'>
 										<div className='flex flex-row items-center justify-between'>
 											<FormLabel className='max-w-[50px] px-2 text-xl font-bold'>From</FormLabel>
-											<Select onValueChange={field.onChange} value={field.value}>
+											<Select onValueChange={handleFromUnitChange} value={field.value}>
 												<FormControl className='max-w-[250px]'>
 													<SelectTrigger>
 														<SelectValue />
