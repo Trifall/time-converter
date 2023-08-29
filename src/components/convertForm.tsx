@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { convertTime } from '../lib/calculations';
 import { TFormSchema, formSchema } from '../lib/zodTypes';
+import { useCalculationStore } from '../state/calculationStore';
 import { TimeDescriptions, TimeType, TimeTypes } from '../types/time';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
@@ -10,6 +11,8 @@ import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 const ConvertForm = () => {
+	const { setInputValue, setResult, setFromUnit, setToUnit } = useCalculationStore();
+
 	const form = useForm<TFormSchema>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -36,7 +39,8 @@ const ConvertForm = () => {
 		}
 	};
 
-	const handleSwapUnits = () => {
+	const handleSwapUnits = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e?.preventDefault();
 		const { from_unit, to_unit } = form.getValues();
 		if (from_unit === TimeTypes['hours:minutes:seconds'] || to_unit === TimeTypes['hours:minutes:seconds']) {
 			handleFromUnitChange(to_unit);
@@ -55,28 +59,45 @@ const ConvertForm = () => {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: TFormSchema) {
+		console.log('values1:', values);
+
+		let inputValue;
+		let result;
 		if (values.from_unit === TimeTypes['hours:minutes:seconds']) {
 			const { hours, minutes, seconds } = values;
 			if (hours === undefined || minutes === undefined || seconds === undefined) {
 				return;
 				//TODO: implement more error handling here (e.g. show error message)
 			}
-			const totalSeconds = hours * 3600 + minutes * 60 + seconds;
-			convertTime(totalSeconds, values.from_unit as TimeType, values.to_unit as TimeType);
+			inputValue = hours + minutes / 60 + seconds / 3600;
+			result = convertTime(inputValue, values.from_unit as TimeType, values.to_unit as TimeType);
 		} else {
 			const { convertValue } = values;
 			if (convertValue === undefined) {
 				return;
 			}
-			convertTime(convertValue, values.from_unit as TimeType, values.to_unit as TimeType);
+			inputValue = convertValue;
+			result = convertTime(convertValue, values.from_unit as TimeType, values.to_unit as TimeType);
 		}
-		console.log('values:', values);
+
+		if (inputValue === undefined) {
+			return;
+		}
+
+		const FromUnitDescription = TimeDescriptions[values.from_unit as TimeType];
+		const ToUnitDescription = TimeDescriptions[values.to_unit as TimeType];
+
+		setFromUnit(FromUnitDescription);
+		setToUnit(ToUnitDescription);
+
+		setResult(result);
+		setInputValue(inputValue);
 	}
 
 	// 3. Render the form.
 	return (
 		<div className='px-5'>
-			<Card className='max-w-[400px]'>
+			<Card className='w-[400px]'>
 				<CardContent>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 pt-4'>
@@ -89,7 +110,7 @@ const ConvertForm = () => {
 											<FormItem className='flex flex-col'>
 												<div className='flex flex-row items-center justify-between'>
 													<FormLabel className='px-2 text-xl font-bold'>Hours</FormLabel>
-													<FormControl className='max-w-[250px]'>
+													<FormControl className='w-[250px]'>
 														<Input
 															type='text'
 															{...field}
@@ -112,7 +133,7 @@ const ConvertForm = () => {
 											<FormItem className='flex flex-col'>
 												<div className='flex flex-row items-center justify-between'>
 													<FormLabel className='px-2 text-xl font-bold'>Minutes</FormLabel>
-													<FormControl className='max-w-[250px]'>
+													<FormControl className='w-[250px]'>
 														<Input
 															type='text'
 															{...field}
@@ -135,7 +156,7 @@ const ConvertForm = () => {
 											<FormItem className='flex flex-col'>
 												<div className='flex flex-row items-center justify-between'>
 													<FormLabel className='px-2 text-xl font-bold'>Seconds</FormLabel>
-													<FormControl className='max-w-[250px]'>
+													<FormControl className='w-[250px]'>
 														<Input
 															type='text'
 															{...field}
@@ -184,9 +205,9 @@ const ConvertForm = () => {
 								render={({ field }) => (
 									<FormItem className='flex flex-col'>
 										<div className='flex flex-row items-center justify-between'>
-											<FormLabel className='max-w-[50px] px-2 text-xl font-bold'>From</FormLabel>
+											<FormLabel className='w-[50px] px-2 text-xl font-bold'>From</FormLabel>
 											<Select onValueChange={handleFromUnitChange} value={field.value}>
-												<FormControl className='max-w-[250px]'>
+												<FormControl className='w-[250px]'>
 													<SelectTrigger>
 														<SelectValue />
 													</SelectTrigger>
@@ -211,9 +232,9 @@ const ConvertForm = () => {
 								render={({ field }) => (
 									<FormItem className='flex flex-col'>
 										<div className='flex flex-row items-center justify-between'>
-											<FormLabel className='max-w-[50px] px-2 text-xl font-bold'>To</FormLabel>
+											<FormLabel className='w-[50px] px-2 text-xl font-bold'>To</FormLabel>
 											<Select onValueChange={field.onChange} value={field.value}>
-												<FormControl className='max-w-[250px]'>
+												<FormControl className='w-[250px]'>
 													<SelectTrigger>
 														<SelectValue />
 													</SelectTrigger>
