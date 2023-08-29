@@ -62,16 +62,17 @@ const ConvertForm = () => {
 			<Card className='max-w-[400px]'>
 				<CardContent>
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 pt-4'>
+						<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 pt-4'>
 							{form.watch('from_unit') === TimeTypes['hours:minutes:seconds'] ? (
-								<div className='flex flex-row'>
+								<div className='flex flex-col gap-4'>
 									<FormField
 										control={form.control}
 										name='hours'
 										render={({ field }) => (
 											<FormItem className='flex flex-col'>
 												<div className='flex flex-row items-center justify-between'>
-													<FormControl className='max-w-[80px]'>
+													<FormLabel className='px-2 text-xl font-bold'>Hours</FormLabel>
+													<FormControl className='max-w-[250px]'>
 														<Input
 															type='text'
 															placeholder='Hours'
@@ -94,7 +95,8 @@ const ConvertForm = () => {
 										render={({ field }) => (
 											<FormItem className='flex flex-col'>
 												<div className='flex flex-row items-center justify-between'>
-													<FormControl className='max-w-[80px]'>
+													<FormLabel className='px-2 text-xl font-bold'>Minutes</FormLabel>
+													<FormControl className='max-w-[250px]'>
 														<Input
 															type='text'
 															placeholder='Minutes'
@@ -117,7 +119,8 @@ const ConvertForm = () => {
 										render={({ field }) => (
 											<FormItem className='flex flex-col'>
 												<div className='flex flex-row items-center justify-between'>
-													<FormControl className='max-w-[80px]'>
+													<FormLabel className='px-2 text-xl font-bold'>Seconds</FormLabel>
+													<FormControl className='max-w-[250px]'>
 														<Input
 															type='text'
 															placeholder='Seconds'
