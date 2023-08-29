@@ -1,49 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { TimeDescriptions, TimeType, TimeTypes } from '../types/time';
+import { TFormSchema, formSchema } from '../lib/zodTypes';
+import { TimeDescriptions, TimeTypes } from '../types/time';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
-const valuePattern = /^([0-9]+.{0,1}[0-9]*,{0,1})*[0-9]$/;
-
-const numberWithCommas = z.coerce
-	.string()
-	.refine((value) => value.length > 0, {
-		message: 'Value is required',
-	})
-	.refine((value) => valuePattern.test(value), {
-		message: 'Invalid number format',
-	})
-	.transform((value) => value.replace(/,/g, '')) // Remove commas during transformation
-	.transform(Number); // Convert the cleaned string to a number
-
-// Define a custom validation function
-function isValidTimeType(value: string): boolean {
-	return Object.prototype.hasOwnProperty.call(TimeDescriptions, value as TimeType);
-}
-
-// Define a zod string type with the custom validation
-const timeTypeValidator: z.ZodType<string> = z.string().refine(isValidTimeType, {
-	message: 'Invalid time type',
-});
-
-// Define the form schema using the custom number type
-const formSchema = z.object({
-	from_unit: timeTypeValidator,
-	to_unit: timeTypeValidator,
-	// One of the two sets of fields is required
-	convertValue: numberWithCommas.optional(),
-	hours: numberWithCommas.optional(),
-	minutes: numberWithCommas.optional(),
-	seconds: numberWithCommas.optional(),
-});
-
 const ConvertForm = () => {
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<TFormSchema>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			convertValue: 0,
@@ -86,7 +52,7 @@ const ConvertForm = () => {
 	};
 
 	// 2. Define a submit handler.
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	function onSubmit(values: TFormSchema) {
 		console.log('values:', values);
 	}
 
