@@ -1,6 +1,6 @@
-import ConvertForm from './components/convertForm';
 import Footer from './components/footer';
 import Header from './components/header';
+import MainContent from './components/mainContent';
 
 function App() {
 	return (
@@ -9,7 +9,7 @@ function App() {
 				<section className='bg-dark'>
 					<div className='layout flex min-h-screen flex-col  text-white'>
 						<Header firstUnit='seconds' secondUnit='hours' />
-						<ConvertForm />
+						<MainContent />
 						<Footer />
 					</div>
 				</section>

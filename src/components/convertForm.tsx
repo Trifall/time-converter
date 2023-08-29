@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
+import { convertTime } from '../lib/calculations';
 import { TFormSchema, formSchema } from '../lib/zodTypes';
-import { TimeDescriptions, TimeTypes } from '../types/time';
+import { TimeDescriptions, TimeType, TimeTypes } from '../types/time';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
@@ -44,6 +45,7 @@ const ConvertForm = () => {
 		}
 		form.setValue('to_unit', from_unit, { shouldValidate: true });
 		// console.log('error:' + form.getFieldState('from_unit').error);
+		// console.log(`values: ${form.getValues()}`);
 	};
 
 	const handleFromUnitChange = (value: string) => {
@@ -53,6 +55,21 @@ const ConvertForm = () => {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: TFormSchema) {
+		if (values.from_unit === TimeTypes['hours:minutes:seconds']) {
+			const { hours, minutes, seconds } = values;
+			if (hours === undefined || minutes === undefined || seconds === undefined) {
+				return;
+				//TODO: implement more error handling here (e.g. show error message)
+			}
+			const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+			convertTime(totalSeconds, values.from_unit as TimeType, values.to_unit as TimeType);
+		} else {
+			const { convertValue } = values;
+			if (convertValue === undefined) {
+				return;
+			}
+			convertTime(convertValue, values.from_unit as TimeType, values.to_unit as TimeType);
+		}
 		console.log('values:', values);
 	}
 
@@ -75,11 +92,10 @@ const ConvertForm = () => {
 													<FormControl className='max-w-[250px]'>
 														<Input
 															type='text'
-															placeholder='Hours'
 															{...field}
 															onBlur={() => {
 																if (field.value?.toString().length === 0) {
-																	form.setValue('hours', 0);
+																	field.onChange('0');
 																}
 															}}
 														/>
@@ -99,11 +115,10 @@ const ConvertForm = () => {
 													<FormControl className='max-w-[250px]'>
 														<Input
 															type='text'
-															placeholder='Minutes'
 															{...field}
 															onBlur={() => {
 																if (field.value?.toString().length === 0) {
-																	form.setValue('minutes', 0);
+																	field.onChange('0');
 																}
 															}}
 														/>
@@ -123,11 +138,10 @@ const ConvertForm = () => {
 													<FormControl className='max-w-[250px]'>
 														<Input
 															type='text'
-															placeholder='Seconds'
 															{...field}
 															onBlur={() => {
 																if (field.value?.toString().length === 0) {
-																	form.setValue('seconds', 0);
+																	field.onChange('0');
 																}
 															}}
 														/>
