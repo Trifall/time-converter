@@ -11,7 +11,7 @@ export const secondsToHours = (seconds: number) => {
 
 type ConversionFactors = Record<TimeType, number>;
 
-const conversionFactors: ConversionFactors = {
+export const conversionFactors: ConversionFactors = {
 	eons: 365 * 10 ** 9, // Assuming 365 days per year and 1 billion years per eon
 	millennia: 365 * 1000, // Assuming 365 days per year and 1000 years per millennium
 	centuries: 365 * 100, // Assuming 365 days per year and 100 years per century

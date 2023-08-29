@@ -109,7 +109,7 @@ export const TimeDescriptions: Record<TimeType, TimeDescription> = {
 		capitalized_name: 'Hours, Minutes, and Seconds',
 		description: 'Time format in hours, minutes, and seconds.',
 		formatted_name: 'Hours:Minutes:Seconds',
-		conversion_phrase: 'hours-minutes-seconds',
+		conversion_phrase: 'hours:minutes:seconds',
 		abbreviations: ['HH:MM:SS'], // Example abbreviation
 	},
 };
