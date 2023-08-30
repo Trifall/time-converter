@@ -26,7 +26,7 @@ const ResultCard = ({ result, from_unit, to_unit, inputValue }: ResultCardProps)
 								{`${resultParts[0]}`}
 								<span className='pl-2 font-bold'>≈</span>
 								<br />
-								{`${resultParts[1]}`}
+								<span className='text-2xl font-bold'>{resultParts[1]}</span>
 							</>
 						) : (
 							<div>{resultValue}</div>
