@@ -23,6 +23,7 @@ const ConvertForm = () => {
 			minutes: undefined,
 			seconds: undefined,
 		},
+		mode: 'onChange',
 	});
 
 	const resetValues = (value: string) => {
@@ -59,7 +60,7 @@ const ConvertForm = () => {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: TFormSchema) {
-		console.log('values1:', values);
+		console.log('Submit Values:', values);
 
 		let inputValue;
 		let result;
@@ -252,7 +253,9 @@ const ConvertForm = () => {
 							)}
 						/>
 
-						<Button type='submit'>Submit</Button>
+						<Button type='submit' className='text-white'>
+							Convert
+						</Button>
 						<Button className='ml-4 bg-transparent p-0 text-primary hover:bg-transparent' onClick={handleSwapUnits}>
 							swap units ↺
 						</Button>
