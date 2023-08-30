@@ -13,7 +13,7 @@ const Header = () => {
 					<h1 className='title-font text-2xl font-medium text-white md:text-3xl'>
 						{!headerResult ? "It's Converting Time." : headerResult}
 					</h1>
-					<h2 className='title-font mb-1 text-lg font-medium tracking-widest text-indigo-500'>Time Converter</h2>
+					<h2 className='title-font mb-1 text-lg font-medium tracking-widest text-blue-500'>Time Converter</h2>
 				</div>
 				<div>
 					<h3 className='title-font mb-1 text-center text-sm tracking-widest text-gray-300 md:text-start'>
