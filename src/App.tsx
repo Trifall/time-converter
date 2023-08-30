@@ -8,7 +8,7 @@ function App() {
 			<main>
 				<section className='bg-dark'>
 					<div className='layout flex min-h-screen flex-col  text-white'>
-						<Header firstUnit='seconds' secondUnit='hours' />
+						<Header />
 						<MainContent />
 						<Footer />
 					</div>
