@@ -96,92 +96,20 @@ const ConvertForm = () => {
 
 	// 3. Render the form.
 	return (
-		<div className='px-5'>
-			<Card className='w-[400px]'>
-				<CardContent>
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 pt-4'>
-							{form.watch('from_unit') === TimeTypes['hours:minutes:seconds'] ? (
-								<div className='flex flex-col gap-4'>
-									<FormField
-										control={form.control}
-										name='hours'
-										render={({ field }) => (
-											<FormItem className='flex flex-col'>
-												<div className='flex flex-row items-center justify-between'>
-													<FormLabel className='px-2 text-xl font-bold'>Hours</FormLabel>
-													<FormControl className='w-[250px]'>
-														<Input
-															type='text'
-															{...field}
-															onBlur={() => {
-																if (field.value?.toString().length === 0) {
-																	field.onChange('0');
-																}
-															}}
-														/>
-													</FormControl>
-												</div>
-												<FormMessage className='self-end'>{form.formState.errors.hours?.message}</FormMessage>
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='minutes'
-										render={({ field }) => (
-											<FormItem className='flex flex-col'>
-												<div className='flex flex-row items-center justify-between'>
-													<FormLabel className='px-2 text-xl font-bold'>Minutes</FormLabel>
-													<FormControl className='w-[250px]'>
-														<Input
-															type='text'
-															{...field}
-															onBlur={() => {
-																if (field.value?.toString().length === 0) {
-																	field.onChange('0');
-																}
-															}}
-														/>
-													</FormControl>
-												</div>
-												<FormMessage className='self-end'>{form.formState.errors.minutes?.message}</FormMessage>
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name='seconds'
-										render={({ field }) => (
-											<FormItem className='flex flex-col'>
-												<div className='flex flex-row items-center justify-between'>
-													<FormLabel className='px-2 text-xl font-bold'>Seconds</FormLabel>
-													<FormControl className='w-[250px]'>
-														<Input
-															type='text'
-															{...field}
-															onBlur={() => {
-																if (field.value?.toString().length === 0) {
-																	field.onChange('0');
-																}
-															}}
-														/>
-													</FormControl>
-												</div>
-												<FormMessage className='self-end'>{form.formState.errors.seconds?.message}</FormMessage>
-											</FormItem>
-										)}
-									/>
-								</div>
-							) : (
+		<Card className='w-[400px] min-w-[400px] max-w-[400px]'>
+			<CardContent>
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 pt-4'>
+						{form.watch('from_unit') === TimeTypes['hours:minutes:seconds'] ? (
+							<div className='flex flex-col gap-4'>
 								<FormField
 									control={form.control}
-									name='convertValue'
+									name='hours'
 									render={({ field }) => (
 										<FormItem className='flex flex-col'>
 											<div className='flex flex-row items-center justify-between'>
-												<FormLabel className='px-2 text-xl font-bold'>Value</FormLabel>
-												<FormControl className='max-w-[250px]'>
+												<FormLabel className='px-2 text-xl font-bold'>Hours</FormLabel>
+												<FormControl className='w-[250px]'>
 													<Input
 														type='text'
 														{...field}
@@ -193,75 +121,145 @@ const ConvertForm = () => {
 													/>
 												</FormControl>
 											</div>
-											<FormMessage className='self-end'>{form.formState.errors.from_unit?.message}</FormMessage>
+											<FormMessage className='self-end'>{form.formState.errors.hours?.message}</FormMessage>
 										</FormItem>
 									)}
 								/>
-							)}
-							<Controller
+								<FormField
+									control={form.control}
+									name='minutes'
+									render={({ field }) => (
+										<FormItem className='flex flex-col'>
+											<div className='flex flex-row items-center justify-between'>
+												<FormLabel className='px-2 text-xl font-bold'>Minutes</FormLabel>
+												<FormControl className='w-[250px]'>
+													<Input
+														type='text'
+														{...field}
+														onBlur={() => {
+															if (field.value?.toString().length === 0) {
+																field.onChange('0');
+															}
+														}}
+													/>
+												</FormControl>
+											</div>
+											<FormMessage className='self-end'>{form.formState.errors.minutes?.message}</FormMessage>
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name='seconds'
+									render={({ field }) => (
+										<FormItem className='flex flex-col'>
+											<div className='flex flex-row items-center justify-between'>
+												<FormLabel className='px-2 text-xl font-bold'>Seconds</FormLabel>
+												<FormControl className='w-[250px]'>
+													<Input
+														type='text'
+														{...field}
+														onBlur={() => {
+															if (field.value?.toString().length === 0) {
+																field.onChange('0');
+															}
+														}}
+													/>
+												</FormControl>
+											</div>
+											<FormMessage className='self-end'>{form.formState.errors.seconds?.message}</FormMessage>
+										</FormItem>
+									)}
+								/>
+							</div>
+						) : (
+							<FormField
 								control={form.control}
-								rules={{ required: true }}
-								name='from_unit'
+								name='convertValue'
 								render={({ field }) => (
 									<FormItem className='flex flex-col'>
 										<div className='flex flex-row items-center justify-between'>
-											<FormLabel className='w-[50px] px-2 text-xl font-bold'>From</FormLabel>
-											<Select onValueChange={handleFromUnitChange} value={field.value}>
-												<FormControl className='w-[250px]'>
-													<SelectTrigger>
-														<SelectValue />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent>
-													{Object.entries(TimeDescriptions).map(([key, value]) => (
-														<SelectItem key={key} value={key}>
-															{value.formatted_name ?? value.capitalized_name ?? value.conversion_phrase}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
+											<FormLabel className='px-2 text-xl font-bold'>Value</FormLabel>
+											<FormControl className='max-w-[250px]'>
+												<Input
+													type='text'
+													{...field}
+													onBlur={() => {
+														if (field.value?.toString().length === 0) {
+															field.onChange('0');
+														}
+													}}
+												/>
+											</FormControl>
 										</div>
 										<FormMessage className='self-end'>{form.formState.errors.from_unit?.message}</FormMessage>
 									</FormItem>
 								)}
 							/>
-							<Controller
-								control={form.control}
-								rules={{ required: true }}
-								name='to_unit'
-								render={({ field }) => (
-									<FormItem className='flex flex-col'>
-										<div className='flex flex-row items-center justify-between'>
-											<FormLabel className='w-[50px] px-2 text-xl font-bold'>To</FormLabel>
-											<Select onValueChange={field.onChange} value={field.value}>
-												<FormControl className='w-[250px]'>
-													<SelectTrigger>
-														<SelectValue />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent>
-													{Object.entries(TimeDescriptions).map(([key, value]) => (
-														<SelectItem key={key} value={key}>
-															{value.formatted_name ?? value.capitalized_name ?? value.conversion_phrase}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-										</div>
-										<FormMessage className='self-end'>{form.formState.errors.to_unit?.message}</FormMessage>
-									</FormItem>
-								)}
-							/>
+						)}
+						<Controller
+							control={form.control}
+							rules={{ required: true }}
+							name='from_unit'
+							render={({ field }) => (
+								<FormItem className='flex flex-col'>
+									<div className='flex flex-row items-center justify-between'>
+										<FormLabel className='w-[50px] px-2 text-xl font-bold'>From</FormLabel>
+										<Select onValueChange={handleFromUnitChange} value={field.value}>
+											<FormControl className='w-[250px]'>
+												<SelectTrigger>
+													<SelectValue />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{Object.entries(TimeDescriptions).map(([key, value]) => (
+													<SelectItem key={key} value={key}>
+														{value.formatted_name ?? value.capitalized_name ?? value.conversion_phrase}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+									<FormMessage className='self-end'>{form.formState.errors.from_unit?.message}</FormMessage>
+								</FormItem>
+							)}
+						/>
+						<Controller
+							control={form.control}
+							rules={{ required: true }}
+							name='to_unit'
+							render={({ field }) => (
+								<FormItem className='flex flex-col'>
+									<div className='flex flex-row items-center justify-between'>
+										<FormLabel className='w-[50px] px-2 text-xl font-bold'>To</FormLabel>
+										<Select onValueChange={field.onChange} value={field.value}>
+											<FormControl className='w-[250px]'>
+												<SelectTrigger>
+													<SelectValue />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{Object.entries(TimeDescriptions).map(([key, value]) => (
+													<SelectItem key={key} value={key}>
+														{value.formatted_name ?? value.capitalized_name ?? value.conversion_phrase}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+									<FormMessage className='self-end'>{form.formState.errors.to_unit?.message}</FormMessage>
+								</FormItem>
+							)}
+						/>
 
-							<Button type='submit'>Submit</Button>
-							<Button className='ml-4 bg-transparent p-0 text-primary hover:bg-transparent' onClick={handleSwapUnits}>
-								swap units ↺
-							</Button>
-						</form>
-					</Form>
-				</CardContent>
-			</Card>
-		</div>
+						<Button type='submit'>Submit</Button>
+						<Button className='ml-4 bg-transparent p-0 text-primary hover:bg-transparent' onClick={handleSwapUnits}>
+							swap units ↺
+						</Button>
+					</form>
+				</Form>
+			</CardContent>
+		</Card>
 	);
 };
 

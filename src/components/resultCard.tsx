@@ -17,7 +17,7 @@ const ResultCard = ({ result, from_unit, to_unit, inputValue }: ResultCardProps)
 	const resultParts = resultValue.split('≈');
 
 	return (
-		<Card className='h-min w-[400px] py-2'>
+		<Card className='h-min w-[400px] min-w-min max-w-[400px] border-4 border-blue-500 py-2'>
 			<CardContent className='py-0'>
 				{result !== undefined && from_unit && to_unit && (
 					<div className='result text-xl'>
