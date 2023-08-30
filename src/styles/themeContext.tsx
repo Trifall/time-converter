@@ -1,42 +1,67 @@
-import { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-interface IThemeContext {
-	theme: string;
-	toggleTheme: () => void;
-}
+type Theme = 'dark' | 'light' | 'system';
 
-export const ThemeContext = createContext<IThemeContext>({
-	theme: 'dark',
-	toggleTheme: () => console.warn('no theme provider'),
-} as IThemeContext);
-
-interface ThemeProviderProps {
-	children: ReactNode;
-}
-
-export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-	const [theme, setTheme] = useState<string>('dark');
-
-	const toggleTheme = useCallback(() => {
-		const toggleTheme = theme === 'dark' ? 'light' : 'dark';
-		setTheme(toggleTheme);
-		window.localStorage.setItem('theme', toggleTheme);
-	}, [theme]);
-
-	useEffect(() => {
-		const localTheme = window.localStorage.getItem('theme');
-		localTheme && setTheme(localTheme);
-	}, []);
-
-	useEffect(() => {
-		if (theme === 'dark') {
-			document.documentElement.classList.add('dark');
-		} else {
-			document.documentElement.classList.remove('dark');
-		}
-	}, [theme]);
-
-	return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
+type ThemeProviderProps = {
+	children: React.ReactNode;
+	defaultTheme?: Theme;
+	storageKey?: string;
 };
 
-export const useTheme = () => useContext<IThemeContext>(ThemeContext);
+type ThemeProviderState = {
+	theme: Theme;
+	setTheme: (theme: Theme) => void;
+};
+
+const initialState: ThemeProviderState = {
+	theme: 'system',
+	setTheme: () => null,
+};
+
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
+export function ThemeProvider({
+	children,
+	defaultTheme = 'system',
+	storageKey = 'vite-ui-theme',
+	...props
+}: ThemeProviderProps) {
+	const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
+
+	useEffect(() => {
+		const root = window.document.documentElement;
+
+		root.classList.remove('light', 'dark');
+
+		if (theme === 'system') {
+			const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+			root.classList.add(systemTheme);
+			return;
+		}
+
+		root.classList.add(theme);
+	}, [theme]);
+
+	const value = {
+		theme,
+		setTheme: (theme: Theme) => {
+			localStorage.setItem(storageKey, theme);
+			setTheme(theme);
+		},
+	};
+
+	return (
+		<ThemeProviderContext.Provider {...props} value={value}>
+			{children}
+		</ThemeProviderContext.Provider>
+	);
+}
+
+export const useTheme = () => {
+	const context = useContext(ThemeProviderContext);
+
+	if (context === undefined) throw new Error('useTheme must be used within a ThemeProvider');
+
+	return context;
+};
