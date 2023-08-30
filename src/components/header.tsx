@@ -8,7 +8,7 @@ const Header = () => {
 
 	return (
 		<section className='body-font text-gray-600'>
-			<div className='container mx-auto flex flex-col px-5 py-6 '>
+			<div className='container ml-1 flex flex-col px-5 py-6 '>
 				<div className='mb-6 flex w-full flex-col pr-0 text-center md:mb-0 md:w-auto md:pr-10 md:text-left'>
 					<h1 className='title-font text-2xl font-medium text-white md:text-3xl'>
 						{!headerResult ? "It's Converting Time." : headerResult}
