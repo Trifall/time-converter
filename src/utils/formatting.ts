@@ -36,8 +36,17 @@ export const formatResult = (
 	from_unit: TimeDescription,
 	to_unit: TimeDescription
 ): string => {
-	if (!inputValue) return 'N/A';
-	if (!result) return 'N/A';
+	if (inputValue !== undefined && inputValue === 0) {
+		return `0 ${from_unit.capitalized_name} ≈ 0 ${to_unit.capitalized_name}`;
+	} else if (!inputValue) {
+		return 'N/A';
+	}
+	if (result !== undefined && result === 0) {
+		return `0 ${from_unit.capitalized_name} ≈ 0 ${to_unit.capitalized_name}`;
+	}
+	if (!result) {
+		return 'N/A';
+	}
 
 	let displayString = '';
 
