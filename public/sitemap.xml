@@ -2,7 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://timeconvert.xyz</loc>
-        <changefreq>weekly</changefreq>
+        <changefreq>daily</changefreq>
+        <lastmod>2023-08-30T10:50:53+00:00</lastmod>
         <priority>1.0</priority>
     </url>
 </urlset>
