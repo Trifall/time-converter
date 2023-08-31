@@ -1,20 +1,28 @@
-# Vite + React + TypeScript + TailwindCSS + ShadCN UI
+# Time Converter
 
 ## Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint/Prettier rules.
 
-Includes:
+### A website that lets you convert from one unit of time to another, quickly.
 
+<br />
+
+### Technologies:
+
+- Vite
+- React
+- Zod
+- Zustand
 - TailwindCSS
 - ShadCN UI
-  - Clsx and tailwind-merge (cn function)
+  - clsx and tailwind-merge (cn function)
+  - Radix UI Icons
 - Prettier
 - ESLint
 
 ## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+To enable type-aware lint rules:
 
 - Configure the top-level `parserOptions` property like this:
 
