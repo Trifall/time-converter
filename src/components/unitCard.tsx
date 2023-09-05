@@ -26,7 +26,7 @@ const UnitCard = ({ unit }: UnitCardProps) => {
 							className='max-h-[20px] min-h-[20px] min-w-[20px] max-w-[20px]'
 							onClick={handleOpenWiki}
 						>
-							<OpenInNewWindowIcon />
+							<OpenInNewWindowIcon color='white' />
 						</Button>
 					)}
 					<br />
