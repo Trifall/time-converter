@@ -10,6 +10,8 @@ type CalculationState = {
 	setFromUnit: (from_unit: TimeDescription | undefined) => void;
 	to_unit: TimeDescription | undefined;
 	setToUnit: (to_unit: TimeDescription | undefined) => void;
+	showCommas: boolean;
+	setShowCommas: (showCommas: boolean) => void;
 };
 
 export const useCalculationStore = create<CalculationState>((set) => ({
@@ -21,4 +23,6 @@ export const useCalculationStore = create<CalculationState>((set) => ({
 	setFromUnit: (from_unit) => set(() => ({ from_unit })),
 	to_unit: undefined,
 	setToUnit: (to_unit) => set(() => ({ to_unit })),
+	showCommas: false,
+	setShowCommas: (showCommas) => set(() => ({ showCommas })),
 }));

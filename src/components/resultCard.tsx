@@ -1,7 +1,8 @@
 import { ClipboardCopyIcon } from '@radix-ui/react-icons';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import { useCalculationStore } from '../state/calculationStore';
 import { TimeDescription } from '../types/time';
-import { formatResult } from '../utils/formatting';
+import { formatDisplayString, formatResult } from '../utils/formatting';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
 import { useToast } from './ui/use-toast';
@@ -15,6 +16,7 @@ type ResultCardProps = {
 
 const ResultCard = ({ result, from_unit, to_unit, inputValue }: ResultCardProps) => {
 	const { toast } = useToast();
+	const { showCommas } = useCalculationStore();
 
 	if (result === undefined || from_unit === undefined || to_unit === undefined || inputValue === undefined)
 		return <></>;
@@ -26,7 +28,8 @@ const ResultCard = ({ result, from_unit, to_unit, inputValue }: ResultCardProps)
 		e?.preventDefault();
 		if (!navigator.clipboard) return;
 		if (resultParts.length < 2) return;
-		navigator.clipboard.writeText(resultParts[1]);
+		if (showCommas) navigator.clipboard.writeText(formatDisplayString(resultParts[1], showCommas));
+		else navigator.clipboard.writeText(resultParts[1]);
 		toast({
 			description: 'The result has been copied to your clipboard.',
 			variant: 'lit',
@@ -41,13 +44,13 @@ const ResultCard = ({ result, from_unit, to_unit, inputValue }: ResultCardProps)
 					<div className='result text-xl'>
 						{resultParts.length > 1 ? (
 							<>
-								{`${resultParts[0]}`}
+								{`${formatDisplayString(resultParts[0], showCommas)}`}
 								<span className='pl-2 font-bold'>≈</span>
 								<br />
-								<span className='text-2xl font-bold'>{resultParts[1]}</span>
+								<span className='text-2xl font-bold'>{formatDisplayString(resultParts[1], showCommas)}</span>
 							</>
 						) : (
-							<div>{resultValue}</div>
+							<div>Unexpected Result: {resultValue}</div>
 						)}
 					</div>
 				)}

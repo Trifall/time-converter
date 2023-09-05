@@ -2,11 +2,11 @@
 
 ## Overview
 
-### A website that lets you convert from one unit of time to another, quickly.
+### A website that lets you convert from one unit of time to another, quickly
 
 <br />
 
-### Technologies:
+### Technologies
 
 - Vite
 - React
@@ -40,8 +40,8 @@ To enable type-aware lint rules:
 
 ## TODOs
 
-- [ ] Add copy to clipboard button
-- [ ] Add comma checkbox for values
+- [x] Add copy to clipboard button
+- [x] Add comma checkbox for values
 - [ ] Maybe random time facts or conversion charts
 - [ ] Fix handle swap when hours:minutes:seconds is one of the units (instead of resetting to 0)
 - [ ] Change error color, make more vibrant

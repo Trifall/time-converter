@@ -6,12 +6,13 @@ import { useCalculationStore } from '../state/calculationStore';
 import { TimeDescriptions, TimeType, TimeTypes } from '../types/time';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
+import { CheckboxWithText } from './ui/checkboxWithText';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 const ConvertForm = () => {
-	const { setInputValue, setResult, setFromUnit, setToUnit } = useCalculationStore();
+	const { setInputValue, setResult, setFromUnit, setToUnit, setShowCommas } = useCalculationStore();
 
 	const form = useForm<TFormSchema>({
 		resolver: zodResolver(formSchema),
@@ -98,7 +99,7 @@ const ConvertForm = () => {
 	// 3. Render the form.
 	return (
 		<Card className='w-[400px] min-w-[400px] max-w-[400px]'>
-			<CardContent>
+			<CardContent className='relative'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 pt-4'>
 						{form.watch('from_unit') === TimeTypes['hours:minutes:seconds'] ? (
@@ -253,12 +254,24 @@ const ConvertForm = () => {
 							)}
 						/>
 
-						<Button type='submit' className='text-white'>
-							Convert
-						</Button>
-						<Button className='ml-4 bg-transparent p-0 text-primary hover:bg-transparent' onClick={handleSwapUnits}>
-							swap units ↺
-						</Button>
+						<div className='flex flex-row'>
+							<Button type='submit' className='text-white'>
+								Convert
+							</Button>
+							<Button className='ml-4 bg-transparent p-0 text-primary hover:bg-transparent' onClick={handleSwapUnits}>
+								swap units ↺
+							</Button>
+							<div className='flex flex-grow items-center justify-end'>
+								<CheckboxWithText
+									id='UseCommasCheckbox'
+									label='Display commas?'
+									changeFunction={(checked) => {
+										console.log('clicked:', checked);
+										setShowCommas(checked);
+									}}
+								/>
+							</div>
+						</div>
 					</form>
 				</Form>
 			</CardContent>
