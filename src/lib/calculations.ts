@@ -31,7 +31,17 @@ export const conversionFactors: ConversionFactors = {
 };
 
 export const convertTime = (value: number, fromUnit: TimeType, toUnit: TimeType): number | undefined => {
-	console.log(`Converting ${value} ${fromUnit} to ${toUnit}`);
+	// console.log(`Converting ${value} ${fromUnit} to ${toUnit}`);
+	// console.log(`Conversion Factors: ${conversionFactors[fromUnit]}, ${conversionFactors[toUnit]}`);
+	if (fromUnit === toUnit) {
+		return value;
+	}
+	if (fromUnit === 'hours:minutes:seconds' && toUnit === 'hours') {
+		return value;
+	}
+	if (fromUnit === 'hours' && toUnit === 'hours:minutes:seconds') {
+		return value;
+	}
 	const fromFactor = conversionFactors[fromUnit];
 	const toFactor = conversionFactors[toUnit];
 

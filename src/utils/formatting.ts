@@ -48,6 +48,10 @@ export const formatResult = (
 		return 'N/A';
 	}
 
+	if (from_unit.conversion_phrase === to_unit.conversion_phrase) {
+		return `${inputValue} ${from_unit.capitalized_name} ≈ ${result} ${to_unit.capitalized_name}`;
+	}
+
 	let displayString = '';
 
 	const applyRounding = (value: number, timeType: TimeType) => {
@@ -87,6 +91,12 @@ export const formatResult = (
 				seconds === 1 ? '' : 's'
 			}` + ` ≈ ${result} ${to_unit.capitalized_name}`;
 	} else if (to_unit.conversion_phrase === TimeDescriptions['hours:minutes:seconds'].conversion_phrase) {
+		if (from_unit.conversion_phrase === TimeDescriptions['hours'].conversion_phrase) {
+			if (!inputValue.toString().includes('.')) {
+				return `${inputValue} ${from_unit.capitalized_name} ≈ ${inputValue} Hours, 0 Minutes, and 0 Seconds`;
+			}
+		}
+
 		const totalSecondsUnrounded = result * 3600; // Convert to total seconds and round to avoid precision issues
 		let totalSeconds = Math.round(totalSecondsUnrounded); // Convert to total seconds and round to avoid precision issues
 
@@ -110,4 +120,50 @@ export const formatResult = (
 	}
 
 	return displayString;
+};
+
+// String passed in will be in format of "<number> <unit>"
+// Example: "5252.52 hours". This function will return the whole string but add commas to the number based on the showCommas parameter
+export const formatDisplayString = (input?: string, showCommas?: boolean): string => {
+	if (input === undefined) {
+		return 'N/A';
+	}
+
+	input = input.trim();
+	if (input === '') {
+		return 'N/A';
+	}
+
+	// the unit is everything but the first element ([0])
+	const unit = input.split(' ').slice(1).join(' ');
+	if (unit === undefined) {
+		return 'N/A';
+	}
+
+	// maybe
+	if (unit === 'hours:minutes:seconds') {
+		return input;
+	}
+
+	const number = input.split(' ')[0];
+	if (number === undefined) {
+		return 'N/A';
+	}
+
+	const splitString = number.split('.');
+	const wholeNumber = splitString[0];
+	const decimal = splitString[1];
+
+	let formattedWholeNumber = '';
+	if (showCommas) {
+		formattedWholeNumber = wholeNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	} else {
+		formattedWholeNumber = wholeNumber;
+	}
+
+	if (decimal) {
+		return `${formattedWholeNumber}.${decimal} ${unit}`;
+	} else {
+		return formattedWholeNumber + ' ' + unit;
+	}
 };
