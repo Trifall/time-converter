@@ -42,6 +42,6 @@ To enable type-aware lint rules:
 
 - [x] Add copy to clipboard button
 - [x] Add comma checkbox for values
+- [x] Change error color, make more vibrant
 - [ ] Maybe random time facts or conversion charts
 - [ ] Fix handle swap when hours:minutes:seconds is one of the units (instead of resetting to 0)
-- [ ] Change error color, make more vibrant
