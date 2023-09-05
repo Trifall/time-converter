@@ -61,7 +61,7 @@ const ConvertForm = () => {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: TFormSchema) {
-		console.log('Submit Values:', values);
+		// console.log('Submit Values:', values);
 
 		let inputValue;
 		let result;
@@ -266,7 +266,7 @@ const ConvertForm = () => {
 									id='UseCommasCheckbox'
 									label='Display commas?'
 									changeFunction={(checked) => {
-										console.log('clicked:', checked);
+										// console.log('clicked:', checked);
 										setShowCommas(checked);
 									}}
 								/>
