@@ -19,8 +19,8 @@ const ConvertForm = () => {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			convertValue: 0,
-			from_unit: from_unit?.formatted_name ?? from_unit?.conversion_phrase ?? 'minutes',
-			to_unit: to_unit?.formatted_name ?? to_unit?.conversion_phrase ?? 'minutes',
+			from_unit: from_unit?.formatted_name ?? from_unit?.conversion_phrase ?? 'hours',
+			to_unit: to_unit?.formatted_name ?? to_unit?.conversion_phrase ?? 'seconds',
 			hours: undefined,
 			minutes: undefined,
 			seconds: undefined,
