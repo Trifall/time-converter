@@ -116,7 +116,7 @@ export const TimeDescriptions: Record<TimeType, TimeDescription> = {
 		description:
 			'The combination of hours, minutes, and seconds is a common way to express time in a digital format. It is widely used for tracking durations and time intervals in various contexts.',
 		formatted_name: 'Hours:Minutes:Seconds',
-		conversion_phrase: 'hours:minutes:seconds',
+		conversion_phrase: 'hours-minutes-seconds',
 		abbreviations: ['HH:MM:SS'],
 		wikipedia_link: 'https://en.wikipedia.org/wiki/ISO_8601#Times',
 	},
