@@ -12,14 +12,14 @@ import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 const ConvertForm = () => {
-	const { setInputValue, setResult, setFromUnit, setToUnit, setShowCommas } = useCalculationStore();
+	const { setInputValue, setResult, setFromUnit, setToUnit, setShowCommas, from_unit, to_unit } = useCalculationStore();
 
 	const form = useForm<TFormSchema>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			convertValue: 0,
-			from_unit: 'hours',
-			to_unit: 'seconds',
+			from_unit: from_unit?.formatted_name ?? from_unit?.conversion_phrase ?? 'minutes',
+			to_unit: to_unit?.formatted_name ?? to_unit?.conversion_phrase ?? 'minutes',
 			hours: undefined,
 			minutes: undefined,
 			seconds: undefined,
@@ -56,7 +56,11 @@ const ConvertForm = () => {
 
 	const handleFromUnitChange = (value: string) => {
 		form.setValue('from_unit', value, { shouldValidate: true });
-		resetValues(value);
+		if (value === TimeTypes['hours:minutes:seconds']) resetValues(value);
+	};
+
+	const handleToUnitChange = (value: string) => {
+		form.setValue('to_unit', value, { shouldValidate: true });
 	};
 
 	// 2. Define a submit handler.
@@ -234,7 +238,7 @@ const ConvertForm = () => {
 								<FormItem className='flex flex-col'>
 									<div className='flex flex-row items-center justify-between'>
 										<FormLabel className='w-[50px] px-2 text-xl font-bold'>To</FormLabel>
-										<Select onValueChange={field.onChange} value={field.value}>
+										<Select onValueChange={handleToUnitChange} value={field.value}>
 											<FormControl className='w-[250px]'>
 												<SelectTrigger>
 													<SelectValue />

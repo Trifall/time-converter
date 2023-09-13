@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { TimeDescription } from '../types/time';
+import { TimeDescription, TimeDescriptions } from '../types/time';
 
 type CalculationState = {
 	inputValue: number | undefined;
@@ -15,13 +15,13 @@ type CalculationState = {
 };
 
 export const useCalculationStore = create<CalculationState>((set) => ({
-	inputValue: undefined,
+	inputValue: 0,
 	setInputValue: (inputValue) => set(() => ({ inputValue })),
 	result: undefined,
 	setResult: (result) => set(() => ({ result })),
-	from_unit: undefined,
+	from_unit: TimeDescriptions['hours'],
 	setFromUnit: (from_unit) => set(() => ({ from_unit })),
-	to_unit: undefined,
+	to_unit: TimeDescriptions['seconds'],
 	setToUnit: (to_unit) => set(() => ({ to_unit })),
 	showCommas: false,
 	setShowCommas: (showCommas) => set(() => ({ showCommas })),
