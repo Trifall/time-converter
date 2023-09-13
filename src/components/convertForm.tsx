@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { convertTime } from '../lib/calculations';
 import { TFormSchema, formSchema } from '../lib/zodTypes';
@@ -53,6 +54,53 @@ const ConvertForm = () => {
 		// console.log('error:' + form.getFieldState('from_unit').error);
 		// console.log(`values: ${form.getValues()}`);
 	};
+
+	useEffect(() => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const from = urlParams.get('from');
+		const to = urlParams.get('to');
+
+		if (from && to) {
+			// Check if URL params are different from current state
+			if (from !== from_unit?.conversion_phrase || to !== to_unit?.conversion_phrase) {
+				if (from === 'hours-minutes-seconds') {
+					setFromUnit(TimeDescriptions['hours:minutes:seconds']);
+					handleFromUnitChange('hours:minutes:seconds');
+				}
+				if (to === 'hours-minutes-seconds') {
+					setToUnit(TimeDescriptions['hours:minutes:seconds']);
+					handleToUnitChange('hours:minutes:seconds');
+				}
+
+				if (TimeTypes[from as TimeType]) {
+					setFromUnit(TimeDescriptions[from as TimeType]);
+					handleFromUnitChange(from);
+				}
+				if (TimeTypes[to as TimeType]) {
+					setToUnit(TimeDescriptions[to as TimeType]);
+					handleToUnitChange(to);
+				}
+
+				// Update URL params if necessary
+				if (from !== from_unit?.conversion_phrase) {
+					urlParams.set('from', from_unit?.conversion_phrase ?? 'hours');
+				}
+				if (to !== to_unit?.conversion_phrase) {
+					urlParams.set('to', to_unit?.conversion_phrase ?? 'seconds');
+				}
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		// Update the browser's URL
+		window.history.pushState(
+			{},
+			'',
+			`${window.location.pathname}?from=${from_unit?.conversion_phrase}&to=${to_unit?.conversion_phrase}`
+		);
+	}, [from_unit, to_unit]);
 
 	const handleFromUnitChange = (value: string) => {
 		form.setValue('from_unit', value, { shouldValidate: true });
