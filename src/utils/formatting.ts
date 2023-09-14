@@ -140,7 +140,6 @@ export const formatDisplayString = (input?: string, showCommas?: boolean): strin
 		return 'N/A';
 	}
 
-	// maybe
 	if (unit === 'hours:minutes:seconds') {
 		return input;
 	}

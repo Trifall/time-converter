@@ -51,8 +51,6 @@ const ConvertForm = () => {
 			form.setValue('from_unit', to_unit, { shouldValidate: true });
 		}
 		form.setValue('to_unit', from_unit, { shouldValidate: true });
-		// console.log('error:' + form.getFieldState('from_unit').error);
-		// console.log(`values: ${form.getValues()}`);
 	};
 
 	useEffect(() => {
@@ -81,7 +79,6 @@ const ConvertForm = () => {
 					handleToUnitChange(to);
 				}
 
-				// Update URL params if necessary
 				if (from !== from_unit?.conversion_phrase) {
 					urlParams.set('from', from_unit?.conversion_phrase ?? 'hours');
 				}
@@ -111,17 +108,14 @@ const ConvertForm = () => {
 		form.setValue('to_unit', value, { shouldValidate: true });
 	};
 
-	// 2. Define a submit handler.
 	function onSubmit(values: TFormSchema) {
-		// console.log('Submit Values:', values);
-
 		let inputValue;
 		let result;
+
 		if (values.from_unit === TimeTypes['hours:minutes:seconds']) {
 			const { hours, minutes, seconds } = values;
 			if (hours === undefined || minutes === undefined || seconds === undefined) {
 				return;
-				//TODO: implement more error handling here (e.g. show error message)
 			}
 			inputValue = hours + minutes / 60 + seconds / 3600;
 			result = convertTime(inputValue, values.from_unit as TimeType, values.to_unit as TimeType);
@@ -148,7 +142,6 @@ const ConvertForm = () => {
 		setInputValue(inputValue);
 	}
 
-	// 3. Render the form.
 	return (
 		<Card className='w-[400px] min-w-[400px] max-w-[400px]'>
 			<CardContent className='relative'>
@@ -318,7 +311,6 @@ const ConvertForm = () => {
 									id='UseCommasCheckbox'
 									label='Display commas?'
 									changeFunction={(checked) => {
-										// console.log('clicked:', checked);
 										setShowCommas(checked);
 									}}
 								/>

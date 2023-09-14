@@ -1,9 +1,5 @@
 import { TimeType } from '../types/time';
 
-// const truncateDecimals = (number: number) => {
-// 	return Math[number < 0 ? 'ceil' : 'floor'](number);
-// };
-
 export const secondsToHours = (seconds: number) => {
 	if (seconds === 0) return 0;
 	return seconds / 3600;
@@ -30,9 +26,8 @@ export const conversionFactors: ConversionFactors = {
 	'hours:minutes:seconds': 1 / 24, // 1 day = 24 hours
 };
 
+// Convert between time units using the conversionFactors data
 export const convertTime = (value: number, fromUnit: TimeType, toUnit: TimeType): number | undefined => {
-	// console.log(`Converting ${value} ${fromUnit} to ${toUnit}`);
-	// console.log(`Conversion Factors: ${conversionFactors[fromUnit]}, ${conversionFactors[toUnit]}`);
 	if (fromUnit === toUnit) {
 		return value;
 	}
