@@ -92,7 +92,7 @@ const ConvertForm = () => {
 
 	useEffect(() => {
 		// Update the browser's URL
-		window.history.pushState(
+		window.history.replaceState(
 			{},
 			'',
 			`${window.location.pathname}?from=${from_unit?.conversion_phrase}&to=${to_unit?.conversion_phrase}`
