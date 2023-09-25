@@ -11,7 +11,7 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"serve": "vite preview",
-		"lint:fix": "eslint \"./**/*.{js,jsx,ts,tsx}\" --cache --fix --ignore-path ./.gitignore",
+		"lint:fix": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --cache --fix --ignore-path ./.gitignore",
 		"lint:format": "prettier --ignore-path .gitignore --log-level warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
 		"lint": "yarn lint:fix && yarn lint:format ",
 		"pipeline": "yarn && yarn type-check && yarn lint && yarn build",
