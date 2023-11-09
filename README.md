@@ -2,43 +2,51 @@
 
 ## Overview
 
-### A website that lets you convert from one unit of time to another, quickly
-
-<br />
+A time-unit website that lets you convert between different units, quickly. Has various options to speed up the user's experience, and provides facts about each unit in the conversion.
 
 ### Technologies
 
 - Vite
 - React
-- Zod
-- Zustand
-- TailwindCSS
-- ShadCN UI
+- Zod (Validation)
+- Zustand (State Management)
+- TailwindCSS (Styling)
+- ShadCN UI (Styling / Components)
   - clsx and tailwind-merge (cn function)
   - Radix UI Icons
-- Prettier
-- ESLint
+- Prettier (Formatting)
+- ESLint (Linting)
 
-## Expanding the ESLint configuration
+### Installation
 
-To enable type-aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
+1. Install [Yarn version 3.6.3](https://yarnpkg.com/) if you haven't already
+2. Clone this repo 
+```
+# https
+https://github.com/Trifall/time-converter.git
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+# or ssh
+git@github.com:Trifall/time-converter.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+3. Install dependencies
+```
+yarn install
+```
 
-## TODOs
+4. Run development server
+```
+yarn dev
+```
+
+5. Compile build
+```
+yarn build
+```
+
+
+### TODOs
 
 - [x] Add copy to clipboard button
 - [x] Add comma checkbox for values
